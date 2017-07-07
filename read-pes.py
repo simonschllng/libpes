@@ -1,5 +1,6 @@
 import sys
 import struct
+from collections import namedtuple
 
 ###########################################
 # General util functions for binary files #
@@ -8,6 +9,12 @@ import struct
 def ByteToHex( byteStr ):
     return ''.join( [ "%02X" % ord( x ) for x in byteStr ] ).strip()
 
+
+###########################################
+# Data classes                            #
+###########################################
+
+PesHeader = namedtuple('PesHeader', 'format pec_start_value pec_start_int hoop_value nv1 n_stitch_g')
 
 
 ###########################################
@@ -21,8 +28,14 @@ def hooptypes(value):
     }.get(value, 'unknown')
 
 
-def RearPESHeader(file):
-    return false
+def ReadPESHeader(file):
+    forma = f.read(8) # File Format
+    pecst = f.read(4) # PEC start value
+    pecstart = struct.unpack('<I', pecst)[0] # as int
+    hoopv = f.read(2) # Hoop type
+    nv1 = f.read(2) # Not verified value 1
+    nstitchg = f.read(2) # Number of stitch groups
+    return PesHeader(forma, pecst, pecstart, hoopv, nv1, nstitchg)
 
 def ReadCEmbOneBlock(file):
     return false
@@ -39,18 +52,13 @@ def ReadCSewSegBlock(file):
 
 
 with open(sys.argv[1], "rb") as f:
-    forma = f.read(8) # File Format
-    pecst = f.read(4) # PEC start value
-    pecstart = struct.unpack('<I', pecst)[0] # as int
-    hoopv = f.read(2) # Hoop type
-    nv1 = f.read(2) # Not verified value 1
-    nstitchg = f.read(2) # Number of stitch groups
-    print 'Format:                ' + forma
-    print 'PEC start:             %d' % (pecstart)
-    print 'Hoop value:            ' + ByteToHex(hoopv)
-    print 'Hoop type:             ' + hooptypes(ByteToHex(hoopv))
-    print 'Not verified value 1:  ' + ByteToHex(nv1)
-    print 'Number of stitch grps: ' + ByteToHex(nstitchg)
-    f.seek(pecstart, 0)
-    print 'PEC HEAD:              ' + f.read(3)
+    p = ReadPESHeader(f)
+    print( 'Format:                ' + p.format )
+    print( 'PEC start:             %d' % (p.pec_start_int) )
+    print( 'Hoop value:            ' + ByteToHex(p.hoop_value) )
+    print( 'Hoop type:             ' + hooptypes(ByteToHex(p.hoop_value)) )
+    print( 'Not verified value 1:  ' + ByteToHex(p.nv1) )
+    print( 'Number of stitch grps: ' + ByteToHex(p.n_stitch_g) )
+    f.seek(p.pec_start_int, 0)
+    print( 'PEC HEAD:              ' + f.read(3) )
 
