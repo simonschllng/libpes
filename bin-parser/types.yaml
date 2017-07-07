@@ -1,0 +1,11 @@
+---
+types:
+  int:
+    size: 2
+  text:
+    delimiter:
+      - 0x00
+  pesversion:
+    size: 8
+    function:
+      name: text

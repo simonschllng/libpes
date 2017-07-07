@@ -1,0 +1,112 @@
+---
+
+- name: Header
+  structure:
+  - name: pes_version
+    type: pesversion
+  - name: pec_start_pos
+    type: int
+    size: 4
+  - name: hoop_type
+    type: raw
+    size: 2
+  - name: unverified
+    type: raw
+    size: 2
+  - name: number_of_stitchgroups
+    type: int
+    size: 2
+  - name: termination
+    size: 4
+    type: raw
+- name: CEmbOne
+  structure:
+  - name: block_name_length
+    type: int
+    size: 2
+  - name: block_name
+    type: text
+    size: 7 #block_name_length
+  - name: dim
+    structure:
+    - name: min_x
+      type: int
+      size: 2
+    - name: min_y
+      type: int
+      size: 2
+    - name: max_x
+      type: int
+      size: 2
+    - name: max_y
+      type: int
+      size: 2
+  - name: StitchGroupData
+    structure:
+    - name: dim
+      structure:
+      - name: min_x
+        type: int
+        size: 2
+      - name: min_y
+        type: int
+        size: 2
+      - name: max_x
+        type: int
+        size: 2
+      - name: max_y
+        type: int
+        size: 2
+    - name: matrix
+      structure:
+      - name: scale_x
+        type: raw #float
+        size: 4
+      - name: skew_x
+        type: raw #float
+        size: 4
+      - name: scale_y
+        type: raw #float
+        size: 4
+      - name: skew_y
+        type: raw #float
+        size: 4
+    - name: centering
+      structure:
+      - name: h_pos
+        type: raw #float
+        size: 4
+      - name: v_pos
+        type: raw #float
+        size: 4
+    - name: unknown1
+      type: raw
+      size: 2
+    - name: locations
+      structure:
+      - name: x
+        type: int
+        size: 2
+      - name: y
+        type: int
+        size: 2
+    - name: size
+      structure:
+      - name: width
+        type: int
+        size: 2
+      - name: height
+        type: int
+        size: 2
+    - name: unknown2
+      type: raw
+      size: 4
+    - name: unknown3
+      type: raw
+      size: 4
+    - name: number_of_segments
+      type: int
+      size: 2
+    - name: stitch_group_end
+      type: raw
+      size: 4
