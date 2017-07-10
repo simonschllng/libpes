@@ -60,25 +60,19 @@
     - name: matrix
       structure:
       - name: scale_x
-        type: raw #float
-        size: 4
+        type: float
       - name: skew_x
-        type: raw #float
-        size: 4
+        type: float
       - name: scale_y
-        type: raw #float
-        size: 4
+        type: float
       - name: skew_y
-        type: raw #float
-        size: 4
+        type: float
     - name: centering
       structure:
       - name: h_pos
-        type: raw #float
-        size: 4
+        type: float
       - name: v_pos
-        type: raw #float
-        size: 4
+        type: float
     - name: unknown1
       type: raw
       size: 2
